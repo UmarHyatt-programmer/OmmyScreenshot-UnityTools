@@ -1,9 +1,9 @@
 ﻿//C# Example
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 namespace screenshot
 {
-#if UNITY_EDITOR
 [ExecuteInEditMode]
 public class Screenshot : EditorWindow
 {
@@ -159,7 +159,7 @@ public class Screenshot : EditorWindow
 
         if (GUILayout.Button("More Assets", GUILayout.MaxWidth(100), GUILayout.MinHeight(40)))
         {
-            Application.OpenURL("https://assetstore.unity.com/packages/slug/229151");
+            Application.OpenURL("https://assetstore.unity.com/publishers/71963");
         }
 
         EditorGUILayout.EndHorizontal();
