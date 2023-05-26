@@ -21,7 +21,7 @@ namespace screenshot
         RenderTexture renderTexture;
 
         bool isTransparent = false;
-        bool includeUI = false;
+        //bool includeUI = false;
 
         // Add menu item named "My Window" to the Window menu
 #if UNITY_EDITOR
@@ -97,7 +97,7 @@ namespace screenshot
             }
 
             isTransparent = EditorGUILayout.Toggle("Transparent Background", isTransparent);
-            includeUI = EditorGUILayout.Toggle("Taking Screenshots With UI Elements", includeUI);
+            //includeUI = EditorGUILayout.Toggle("Taking Screenshots With UI Elements", includeUI);
 
 
             EditorGUILayout.HelpBox(
@@ -144,6 +144,10 @@ namespace screenshot
                     TakeHiResShot();
                 }
             }
+            if(GUILayout.Button("Take Screenshot With UI",GUILayout.MinHeight(60)))
+            {
+                ScreenShootWithUI();
+            }
 
             EditorGUILayout.Space();
             EditorGUILayout.BeginHorizontal();
@@ -175,12 +179,12 @@ namespace screenshot
                 int resWidthN = resWidth * scale;
                 int resHeightN = resHeight * scale;
                 string filename = ScreenShotName(resWidthN, resHeightN);
-                if (includeUI)
-                {
-                    ScreenShootWithUI();
-                    takeHiResShot = false;
-                    return;
-                }
+                // if (includeUI)
+                // {
+                //     ScreenShootWithUI();
+                //     takeHiResShot = false;
+                //     return;
+                // }
 
 
                 RenderTexture rt = new RenderTexture(resWidthN, resHeightN, 24);
@@ -215,7 +219,7 @@ namespace screenshot
 
         void ScreenShootWithUI()
         {
-            Debug.Log("screenshot");
+            Debug.Log("Screenshot Taken with UI");
             EditorApplication.ExecuteMenuItem("Window/General/Game");
             ScreenCapture.CaptureScreenshot(ScreenShotName(1,1), 1);
         }
