@@ -1,4 +1,5 @@
-﻿//C# Example
+﻿using System.IO;
+//C# Example
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -176,35 +177,35 @@ namespace screenshot
                 string filename = ScreenShotName(resWidthN, resHeightN);
                 if (includeUI)
                 {
-                    ScreenCapture.CaptureScreenshot(filename, scale);
+                    ScreenShootWithUI();
                     takeHiResShot = false;
                     return;
                 }
 
 
                 RenderTexture rt = new RenderTexture(resWidthN, resHeightN, 24);
-                    myCamera.targetTexture = rt;
+                myCamera.targetTexture = rt;
 
-                    TextureFormat tFormat;
-                    if (isTransparent)
-                        tFormat = TextureFormat.ARGB32;
-                    else
-                        tFormat = TextureFormat.RGB24;
+                TextureFormat tFormat;
+                if (isTransparent)
+                    tFormat = TextureFormat.ARGB32;
+                else
+                    tFormat = TextureFormat.RGB24;
 
 
-                    Texture2D screenShot = new Texture2D(resWidthN, resHeightN, tFormat, false);
-                    myCamera.Render();
-                    RenderTexture.active = rt;
-                    screenShot.ReadPixels(new Rect(0, 0, resWidthN, resHeightN), 0, 0);
-                    myCamera.targetTexture = null;
-                    RenderTexture.active = null;
-                    byte[] bytes = screenShot.EncodeToPNG();
+                Texture2D screenShot = new Texture2D(resWidthN, resHeightN, tFormat, false);
+                myCamera.Render();
+                RenderTexture.active = rt;
+                screenShot.ReadPixels(new Rect(0, 0, resWidthN, resHeightN), 0, 0);
+                myCamera.targetTexture = null;
+                RenderTexture.active = null;
+                byte[] bytes = screenShot.EncodeToPNG();
 
-                    System.IO.File.WriteAllBytes(filename, bytes);
-                    Debug.Log(string.Format("Took screenshot to: {0}", filename));
-                    Application.OpenURL(filename);
-                    takeHiResShot = false;
-                
+                System.IO.File.WriteAllBytes(filename, bytes);
+                Debug.Log(string.Format("Took screenshot to: {0}", filename));
+                Application.OpenURL(filename);
+                takeHiResShot = false;
+
             }
 
             EditorGUILayout.HelpBox(
@@ -212,7 +213,12 @@ namespace screenshot
                 MessageType.Info);
         }
 
-
+        void ScreenShootWithUI()
+        {
+            Debug.Log("screenshot");
+            EditorApplication.ExecuteMenuItem("Window/General/Game");
+            ScreenCapture.CaptureScreenshot(ScreenShotName(1,1), 1);
+        }
         private bool takeHiResShot = false;
         public string lastScreenshot = "";
 
