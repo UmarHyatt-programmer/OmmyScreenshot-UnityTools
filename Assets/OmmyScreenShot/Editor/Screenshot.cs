@@ -1,258 +1,338 @@
 ﻿using System.IO;
-//C# Example
-
 using UnityEditor;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace screenshot
 {
     [ExecuteInEditMode]
     public class Screenshot : EditorWindow
     {
-        int resWidth = Screen.width * 4;
-        int resHeight = Screen.height * 4;
-
         public Camera myCamera;
         int scale = 1;
-
         string path = "";
-        bool showPreview = true;
-        RenderTexture renderTexture;
-
         bool isTransparent = false;
-        //bool includeUI = false;
+        bool isPortrait = false;
+        bool takeHiResShot = false;
+        public string lastScreenshot = "";
+        Texture2D logo;
+        List<Vector2Int> customResolutions = new List<Vector2Int>();
 
-        // Add menu item named "My Window" to the Window menu
-#if UNITY_EDITOR
         [MenuItem("Tools/Ommy ScreenShot/Open ScreenShoot Window")]
-#endif
         public static void ShowWindow()
         {
-            //Show existing window instance. If one doesn't exist, make one.
-            EditorWindow editorWindow = EditorWindow.GetWindow(typeof(Screenshot));
+            EditorWindow editorWindow = GetWindow<Screenshot>();
             editorWindow.autoRepaintOnSceneChange = true;
-            //  var texture = Resources.Load<Texture>("logo");
-            // editorWindow.titleContent = new GUIContent("Custom window name", texture);
+            editorWindow.titleContent = new GUIContent("Screenshot");
             editorWindow.Show();
-            editorWindow.titleContent.text = "Screenshot";
         }
 
-        public void init()
+        void OnEnable()
         {
+            logo = Resources.Load<Texture2D>("logo");
         }
-
-        float lastTime;
-
 
         void OnGUI()
         {
-            //GUILayout.BeginArea(new Rect(10, 10, 100, 100));
-            //GUILayout.EndArea();
-            //EditorGUI.ObjectField(new Rect(3, 3, 200, 200),"Add a Texture:",Resources.Load<Texture>("logo"),typeof(Texture2D));
-            GUILayout.Box(Resources.Load<Texture>("logo"), GUILayout.Height(64), GUILayout.Width(64));
-            EditorGUILayout.LabelField("Ommy's ScreenShoot Plugin", EditorStyles.boldLabel);
-            EditorGUILayout.LabelField("Resolution", EditorStyles.boldLabel);
+            // Custom GUI styles
+            GUIStyle headerStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontStyle = FontStyle.Bold,
+                fontSize = 18,
+                alignment = TextAnchor.MiddleCenter,
+                normal = { textColor = Color.cyan }
+            };
 
-            resWidth = EditorGUILayout.IntField("Width", resWidth);
-            resHeight = EditorGUILayout.IntField("Height", resHeight);
+            GUIStyle subHeaderStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontStyle = FontStyle.Bold,
+                fontSize = 14,
+                alignment = TextAnchor.MiddleCenter,
+                normal = { textColor = Color.white }
+            };
 
-            EditorGUILayout.Space();
+            GUIStyle buttonStyle = new GUIStyle(GUI.skin.button)
+            {
+                fontSize = 14,
+                fontStyle = FontStyle.Bold,
+                normal = { textColor = Color.white, background = MakeTex(2, 2, new Color(0.1f, 0.5f, 0.8f, 1.0f)) },
+                fixedHeight = 40
+            };
+
+            GUIStyle browseButtonStyle = new GUIStyle(GUI.skin.button)
+            {
+                fontSize = 12,
+                fontStyle = FontStyle.Bold,
+                normal = { textColor = Color.white, background = MakeTex(2, 2, new Color(0.2f, 0.6f, 0.3f, 1.0f)) },
+                fixedHeight = 30
+            };
+
+            GUIStyle textFieldStyle = new GUIStyle(GUI.skin.textField)
+            {
+                fontSize = 14,
+                normal = { textColor = Color.white, background = MakeTex(2, 2, new Color(0.2f, 0.2f, 0.2f, 1.0f)) }
+            };
+
+            GUIStyle intFieldStyle = new GUIStyle(GUI.skin.textField)
+            {
+                fontSize = 14,
+                alignment = TextAnchor.MiddleCenter,
+                normal = { textColor = Color.white, background = MakeTex(2, 2, new Color(0.2f, 0.2f, 0.2f, 1.0f)) }
+            };
+
+            // Main layout
+            GUILayout.BeginVertical("box");
+            GUILayout.Space(10);
+
+            GUILayout.Label(logo, GUILayout.Height(64), GUILayout.Width(64));
+
+            GUILayout.Label("Ommy's Screenshot Plugin", headerStyle);
+            GUILayout.Space(10);
+
+            // Custom resolutions section
+            GUILayout.Label("Custom Resolutions", subHeaderStyle);
+            GUILayout.Space(5);
+
+            for (int i = 0; i < customResolutions.Count; i++)
+            {
+                GUILayout.BeginHorizontal();
+                customResolutions[i] = new Vector2Int(EditorGUILayout.IntField(customResolutions[i].x, intFieldStyle, GUILayout.Width(80)),
+                                                      EditorGUILayout.IntField(customResolutions[i].y, intFieldStyle, GUILayout.Width(80)));
+
+                if (GUILayout.Button("Remove", GUILayout.Width(60)))
+                {
+                    customResolutions.RemoveAt(i);
+                }
+                GUILayout.EndHorizontal();
+            }
+
+            if (GUILayout.Button("Add Resolution", GUILayout.Width(150)))
+            {
+                customResolutions.Add(new Vector2Int(1920, 1080));
+            }
+
+            GUILayout.Space(10);
 
             scale = EditorGUILayout.IntSlider("Scale", scale, 1, 15);
 
-            EditorGUILayout.HelpBox(
-                "The default mode of screenshot is crop - so choose a proper width and height. The scale is a factor " +
-                "to multiply or enlarge the renders without loosing quality.", MessageType.None);
+            EditorGUILayout.HelpBox("Choose a proper width and height. The scale factor multiplies the renders without losing quality.", MessageType.Info);
+            GUILayout.Space(10);
 
-
-            EditorGUILayout.Space();
-
-
-            GUILayout.Label("Save Path", EditorStyles.boldLabel);
-
+            // Save path section
+            GUILayout.Label("Save Path", subHeaderStyle);
+            GUILayout.Space(5);
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.TextField(path, GUILayout.ExpandWidth(false));
-            if (GUILayout.Button("Browse", GUILayout.ExpandWidth(false)))
+            path = EditorGUILayout.TextField(path, textFieldStyle);
+            if (GUILayout.Button("Browse", browseButtonStyle, GUILayout.Width(80)))
                 path = EditorUtility.SaveFolderPanel("Path to Save Images", path, Application.dataPath);
-
             EditorGUILayout.EndHorizontal();
 
-            EditorGUILayout.HelpBox("Choose the folder in which to save the screenshots ", MessageType.None);
-            EditorGUILayout.Space();
+            EditorGUILayout.HelpBox("Choose the folder to save the screenshots.", MessageType.Info);
+            GUILayout.Space(10);
 
-
-            //isTransparent = EditorGUILayout.Toggle(isTransparent,"Transparent Background");
-
-
-            GUILayout.Label("Select Camera", EditorStyles.boldLabel);
-
-
-            myCamera = EditorGUILayout.ObjectField(myCamera, typeof(Camera), true, null) as Camera;
-
+            // Camera selection
+            GUILayout.Label("Select Camera", subHeaderStyle);
+            GUILayout.Space(5);
+            myCamera = (Camera)EditorGUILayout.ObjectField(myCamera, typeof(Camera), true);
 
             if (myCamera == null)
-            {
                 myCamera = Camera.main;
-            }
 
             isTransparent = EditorGUILayout.Toggle("Transparent Background", isTransparent);
-            //includeUI = EditorGUILayout.Toggle("Taking Screenshots With UI Elements", includeUI);
+            isPortrait = EditorGUILayout.Toggle("Is Portrait", isPortrait);
+            GUILayout.Space(10);
 
 
-            EditorGUILayout.HelpBox(
-                "Choose the camera of which to capture the render. You can make the background transparent using the transparency option.",
-                MessageType.None);
 
-            EditorGUILayout.Space();
-            EditorGUILayout.BeginVertical();
-            EditorGUILayout.LabelField("Default Options", EditorStyles.boldLabel);
-
-
-            if (GUILayout.Button("Set To Screen Size"))
+            // if (GUILayout.Button("Default Size", buttonStyle))
+            // {
+            //     customResolutions.Clear();
+            //     customResolutions.Add(new Vector2Int(2560, 1440));
+            //     scale = 1;
+            // }
+            if (GUILayout.Button("Icon Size", buttonStyle))
             {
-                resHeight = (int)Handles.GetMainGameViewSize().y;
-                resWidth = (int)Handles.GetMainGameViewSize().x;
-            }
-
-
-            if (GUILayout.Button("Default Size"))
-            {
-                resHeight = 1440;
-                resWidth = 2560;
+                customResolutions.Clear();
+                customResolutions.Add(new Vector2Int(1024, 1024));
+                customResolutions.Add(new Vector2Int(512, 512));
                 scale = 1;
             }
-
-
-            EditorGUILayout.EndVertical();
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField(
-                "Screenshot will be taken at " + resWidth * scale + " x " + resHeight * scale + " px",
-                EditorStyles.boldLabel);
-
-            if (GUILayout.Button("Take Screenshot", GUILayout.MinHeight(40)))
+            if (GUILayout.Button("IOS Size", buttonStyle))
             {
-                if (path == "")
+                customResolutions.Clear();
+                if(isPortrait)
                 {
-                    path = EditorUtility.SaveFolderPanel("Path to Save Images", path, Application.dataPath);
-                    Debug.Log("Path Set");
-                    TakeHiResShot();
+                customResolutions.Add(new Vector2Int(1290, 2796));
+                customResolutions.Add(new Vector2Int(1284, 2778));
+                customResolutions.Add(new Vector2Int(1242, 2208));
+                customResolutions.Add(new Vector2Int(2028, 2732));
                 }
                 else
                 {
-                    TakeHiResShot();
+                customResolutions.Add(new Vector2Int(2796, 1290));
+                customResolutions.Add(new Vector2Int(2778, 1284));
+                customResolutions.Add(new Vector2Int(2208, 1242));
+                customResolutions.Add(new Vector2Int(2732, 2028));                  
                 }
+                scale = 1;
             }
-            if (GUILayout.Button("Take Screenshot With UI", GUILayout.MinHeight(40)))
+            if (GUILayout.Button("Android Size", buttonStyle))
             {
-                if (path == "")
-                {
-                    path = EditorUtility.SaveFolderPanel("Path to Save Images", path, Application.dataPath);
-                    Debug.Log("Path Set");
-                    ScreenShootWithUI();
-                }
-                else
-                {
-                    ScreenShootWithUI();
-                }
+                customResolutions.Clear();
+                if(isPortrait)customResolutions.Add(new Vector2Int(1920, 1080));
+                else customResolutions.Add(new Vector2Int(1080, 1920));
+                scale = 1;
             }
+            if (GUILayout.Button("Set To Screen Size", buttonStyle))
+            {
+                Vector2 screenSize = Handles.GetMainGameViewSize();
+                customResolutions.Clear();
+                customResolutions.Add(new Vector2Int((int)screenSize.x, (int)screenSize.y));
+            }
+            GUILayout.Space(10);
 
-            EditorGUILayout.Space();
             EditorGUILayout.BeginHorizontal();
 
-            if (GUILayout.Button("Open Last Screenshot", GUILayout.MaxWidth(160), GUILayout.MinHeight(40)))
+            if (GUILayout.Button("Take Screenshot", buttonStyle))
             {
-                if (lastScreenshot != "")
+                if (string.IsNullOrEmpty(path))
+                {
+                    path = EditorUtility.SaveFolderPanel("Path to Save Images", path, Application.dataPath);
+                    Debug.Log("Path Set");
+                }
+                TakeHiResShot();
+            }
+
+            if (GUILayout.Button("Take Screenshot With UI", buttonStyle))
+            {
+                if (string.IsNullOrEmpty(path))
+                {
+                    path = EditorUtility.SaveFolderPanel("Path to Save Images", path, Application.dataPath);
+                    Debug.Log("Path Set");
+                }
+                CaptureScreenshotsWithUI();
+            }
+
+            EditorGUILayout.EndHorizontal();
+            GUILayout.Space(10);
+
+            EditorGUILayout.BeginHorizontal();
+
+            if (GUILayout.Button("Open Last Screenshot", buttonStyle))
+            {
+                if (!string.IsNullOrEmpty(lastScreenshot))
                 {
                     Application.OpenURL("file://" + lastScreenshot);
                     Debug.Log("Opening File " + lastScreenshot);
                 }
             }
 
-            if (GUILayout.Button("Open Folder", GUILayout.MaxWidth(100), GUILayout.MinHeight(40)))
+            if (GUILayout.Button("Open Folder", buttonStyle))
             {
                 Application.OpenURL("file://" + path);
             }
 
-            if (GUILayout.Button("More Assets", GUILayout.MaxWidth(100), GUILayout.MinHeight(40)))
+            if (GUILayout.Button("More Assets", buttonStyle))
             {
                 Application.OpenURL("https://assetstore.unity.com/publishers/71963");
             }
 
             EditorGUILayout.EndHorizontal();
-
+            GUILayout.EndVertical();
 
             if (takeHiResShot)
             {
-                int resWidthN = resWidth * scale;
-                int resHeightN = resHeight * scale;
-                string filename = ScreenShotName(resWidthN, resHeightN);
-                // if (includeUI)
-                // {
-                //     ScreenShootWithUI();
-                //     takeHiResShot = false;
-                //     return;
-                // }
-
-
-                RenderTexture rt = new RenderTexture(resWidthN, resHeightN, 24);
-                myCamera.targetTexture = rt;
-
-                TextureFormat tFormat;
-                if (isTransparent)
-                    tFormat = TextureFormat.ARGB32;
-                else
-                    tFormat = TextureFormat.RGB24;
-
-
-                Texture2D screenShot = new Texture2D(resWidthN, resHeightN, tFormat, false);
-                myCamera.Render();
-                RenderTexture.active = rt;
-                screenShot.ReadPixels(new Rect(0, 0, resWidthN, resHeightN), 0, 0);
-                myCamera.targetTexture = null;
-                RenderTexture.active = null;
-                byte[] bytes = screenShot.EncodeToPNG();
-
-                System.IO.File.WriteAllBytes(filename, bytes);
-                Debug.Log(string.Format("Took screenshot to: {0}", filename));
-                Application.OpenURL(filename);
+                CaptureScreenshots();
                 takeHiResShot = false;
-
             }
 
-            EditorGUILayout.HelpBox(
-                "In case of any error, make sure you have Unity Pro as the plugin requires Unity Pro to work.",
-                MessageType.Info);
+            EditorGUILayout.HelpBox("In case of any error, make sure you have Unity Pro as the plugin requires Unity Pro to work.", MessageType.Info);
         }
-
-        void ScreenShootWithUI()
+        [ExecuteAlways]
+        void CaptureScreenshotsWithUI()
         {
-            Debug.Log("Screenshot Taken with UI");
-            EditorApplication.ExecuteMenuItem("Window/General/Game");
-            ScreenCapture.CaptureScreenshot(ScreenShotName(1,1), 1);
-        }
-        private bool takeHiResShot = false;
-        public string lastScreenshot = "";
+            foreach (var resolution in customResolutions)
+            {
+                EditorApplication.ExecuteMenuItem("Window/General/Game");
 
+                int resWidthN = resolution.x * scale;
+                int resHeightN = resolution.y * scale;
+                string filename = ScreenShotName(resWidthN, resHeightN);
+
+                ScreenCapture.CaptureScreenshot(filename, scale);
+
+                Debug.Log($"Took screenshot with UI to: {filename}");
+            }
+
+            // Open the last screenshot taken
+            if (customResolutions.Count > 0)
+            {
+                var lastResolution = customResolutions[customResolutions.Count - 1];
+                Application.OpenURL("file://" + ScreenShotName(lastResolution.x * scale, lastResolution.y * scale));
+            }
+        }
 
         public string ScreenShotName(int width, int height)
         {
-            string strPath = "";
-
-            strPath = string.Format("{0}/screen_{1}x{2}_{3}.png",
-                path,
-                width, height,
-                System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss"));
+            string strPath = string.Format("{0}/screen_{1}x{2}_{3}.png", path, width, height, System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss"));
             lastScreenshot = strPath;
-
             return strPath;
         }
-
 
         public void TakeHiResShot()
         {
             Debug.Log("Taking Screenshot");
             takeHiResShot = true;
+        }
+
+        void CaptureScreenshots()
+        {
+            foreach (var resolution in customResolutions)
+            {
+                int resWidthN = resolution.x * scale;
+                int resHeightN = resolution.y * scale;
+                string filename = ScreenShotName(resWidthN, resHeightN);
+
+                RenderTexture rt = new RenderTexture(resWidthN, resHeightN, 24);
+                myCamera.targetTexture = rt;
+
+                TextureFormat tFormat = isTransparent ? TextureFormat.ARGB32 : TextureFormat.RGB24;
+                Texture2D screenShot = new Texture2D(resWidthN, resHeightN, tFormat, false);
+                myCamera.Render();
+                RenderTexture.active = rt;
+                screenShot.ReadPixels(new Rect(0, 0, resWidthN, resHeightN), 0, 0);
+                myCamera.targetTexture = null;
+                RenderTexture.active = null; // added line to fix an issue with RenderTexture
+                DestroyImmediate(rt); // added line to avoid memory leaks
+                
+                // Save the screenshot as a PNG file
+                byte[] bytes = screenShot.EncodeToPNG();
+                File.WriteAllBytes(filename, bytes);
+
+                // Clean up memory
+                DestroyImmediate(screenShot);
+
+                Debug.Log($"Took screenshot to: {filename}");
+            }
+
+            // Open the last screenshot taken
+            if (customResolutions.Count > 0)
+            {
+                var lastResolution = customResolutions[customResolutions.Count - 1];
+                Application.OpenURL("file://" + ScreenShotName(lastResolution.x * scale, lastResolution.y * scale));
+            }
+        }
+
+        // Helper method to create textures
+        private Texture2D MakeTex(int width, int height, Color col)
+        {
+            Color[] pix = new Color[width * height];
+            for (int i = 0; i < pix.Length; i++)
+                pix[i] = col;
+            Texture2D result = new Texture2D(width, height);
+            result.SetPixels(pix);
+            result.Apply();
+            return result;
         }
     }
 }
