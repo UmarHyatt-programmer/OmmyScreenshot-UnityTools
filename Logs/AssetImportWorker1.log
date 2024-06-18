@@ -1,0 +1,304 @@
+Unity Editor version:    2021.3.20f1 (577897200b8b)
+Branch:                  2021.3/staging
+Build type:              Release
+Batch mode:              YES
+macOS version:           Version 14.4.1 (Build 23E224)
+Darwin version:          23.4.0
+Architecture:            x86_64
+Running under Rosetta:   NO
+Available memory:        16384 MB
+Using pre-set license
+Pro License: YES
+
+COMMAND LINE ARGUMENTS:
+/Applications/Unity/Hub/Editor/2021.3.20f1/Unity.app/Contents/MacOS/Unity
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker1
+-projectPath
+/Users/apple/Desktop/Unity/Github/OmmyScreenshot-UnityTools
+-logFile
+Logs/AssetImportWorker1.log
+-srvPort
+64911
+Successfully changed project path to: /Users/apple/Desktop/Unity/Github/OmmyScreenshot-UnityTools
+/Users/apple/Desktop/Unity/Github/OmmyScreenshot-UnityTools
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Player connection [140704313577728] Host "[IP] 172.20.10.3 [Port] 0 [Flags] 2 [Guid] 4203332907 [EditorId] 4203332907 [Version] 1048832 [Id] OSXEditor(0,MacBook-Pro.local) [Debug] 1 [PackageName] OSXEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
+
+Player connection [140704313577728] Host "[IP] 172.20.10.3 [Port] 0 [Flags] 2 [Guid] 4203332907 [EditorId] 4203332907 [Version] 1048832 [Id] OSXEditor(0,MacBook-Pro.local) [Debug] 1 [PackageName] OSXEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
+
+Refreshing native plugins compatible for Editor in 37.39 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 2021.3.20f1 (577897200b8b)
+[Subsystems] Discovering subsystems at path /Applications/Unity/Hub/Editor/2021.3.20f1/Unity.app/Contents/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path /Users/apple/Desktop/Unity/Github/OmmyScreenshot-UnityTools/Assets
+GfxDevice: creating device client; threaded=0; jobified=0
+Color LCD preferred device: AMD Radeon Pro 5300M (high power)
+Metal devices available: 2
+0: AMD Radeon Pro 5300M (high power)
+1: Intel(R) UHD Graphics 630 (low power)
+Using device AMD Radeon Pro 5300M (high power)
+Initializing Metal device caps: AMD Radeon Pro 5300M
+Initialize mono
+Mono path[0] = '/Applications/Unity/Hub/Editor/2021.3.20f1/Unity.app/Contents/Managed'
+Mono path[1] = '/Applications/Unity/Hub/Editor/2021.3.20f1/Unity.app/Contents/MonoBleedingEdge/lib/mono/unityjit-macos'
+Mono config path = '/Applications/Unity/Hub/Editor/2021.3.20f1/Unity.app/Contents/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56652
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: /Applications/Unity/Hub/Editor/2021.3.20f1/Unity.app/Contents/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
+Register platform support module: /Applications/Unity/Hub/Editor/2021.3.20f1/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
+Register platform support module: /Applications/Unity/Hub/Editor/2021.3.20f1/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.dll
+Registered in 0.002132 seconds.
+[usbmuxd] Start listen thread
+[usbmuxd] Listen thread started
+[usbmuxd] Send listen message
+[usbmuxd] Attached: 35 00008020-000521211430003A
+Native extension for iOS target not found
+Native extension for Android target not found
+Android Extension - Scanning For ADB Devices 204 ms
+Native extension for OSXStandalone target not found
+Refreshing native plugins compatible for Editor in 114.08 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.604 seconds
+Domain Reload Profiling:
+	ReloadAssembly (1604ms)
+		BeginReloadAssembly (141ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (0ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (2ms)
+		EndReloadAssembly (1292ms)
+			LoadAssemblies (140ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (214ms)
+			ReleaseScriptCaches (0ms)
+			RebuildScriptCaches (66ms)
+			SetupLoadedEditorAssemblies (929ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (554ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (114ms)
+				BeforeProcessingInitializeOnLoad (2ms)
+				ProcessInitializeOnLoadAttributes (183ms)
+				ProcessInitializeOnLoadMethodAttributes (75ms)
+				AfterProcessingInitializeOnLoad (0ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (0ms)
+Platform modules already initialized, skipping
+Registering precompiled user dll's ...
+Registered in 0.002045 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for iOS target not found
+Native extension for Android target not found
+Native extension for OSXStandalone target not found
+Refreshing native plugins compatible for Editor in 0.32 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.510 seconds
+Domain Reload Profiling:
+	ReloadAssembly (1512ms)
+		BeginReloadAssembly (201ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (10ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (44ms)
+		EndReloadAssembly (1126ms)
+			LoadAssemblies (122ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (332ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (78ms)
+			SetupLoadedEditorAssemblies (473ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (45ms)
+				SetLoadedEditorAssemblies (1ms)
+				RefreshPlugins (0ms)
+				BeforeProcessingInitializeOnLoad (61ms)
+				ProcessInitializeOnLoadAttributes (330ms)
+				ProcessInitializeOnLoadMethodAttributes (35ms)
+				AfterProcessingInitializeOnLoad (2ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (6ms)
+Platform modules already initialized, skipping
+========================================================================
+Worker process is ready to serve import requests
+Launching external process: /Applications/Unity/Hub/Editor/2021.3.20f1/Unity.app/Contents/Tools/UnityShaderCompiler
+Launched and connected shader compiler UnityShaderCompiler after 0.10 seconds
+Refreshing native plugins compatible for Editor in 0.36 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 1396 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 16 unused Assets / (40.1 KB). Loaded Objects now: 1867.
+Memory consumption went from 59.2 MB to 59.2 MB.
+Total: 4.007224 ms (FindLiveObjects: 0.170588 ms CreateObjectMapping: 0.060813 ms MarkObjects: 3.665245 ms  DeleteObjects: 0.109299 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:framework-osx-AVFoundation: e770b220cccbd017edd2c1fefb359320 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 126017.215267 seconds.
+  path: Assets/screen_1x1_2023-05-31_21-53-54.png
+  artifactKey: Guid(6aa4f15b441844c30bde3175d19a92f0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/screen_1x1_2023-05-31_21-53-54.png using Guid(6aa4f15b441844c30bde3175d19a92f0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9383cdced893604cfa6e926d462d20c5') in 1.066223 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000099 seconds.
+  path: Assets/screen_1080x1920_2023-05-31_21-53-49.png
+  artifactKey: Guid(ce1a9726dfc8943dc8713e4e88ca2047) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/screen_1080x1920_2023-05-31_21-53-49.png using Guid(ce1a9726dfc8943dc8713e4e88ca2047) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e4fe935aa8649f2d127db25c6f618169') in 0.054116 seconds 
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 1.97 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 9 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 9 unused Assets / (19.7 KB). Loaded Objects now: 1870.
+Memory consumption went from 35.2 MB to 35.2 MB.
+Total: 4.187494 ms (FindLiveObjects: 0.159874 ms CreateObjectMapping: 0.073088 ms MarkObjects: 3.932979 ms  DeleteObjects: 0.020395 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:framework-osx-AVFoundation: e770b220cccbd017edd2c1fefb359320 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 190.049021 seconds.
+  path: Assets/OmmyScreenShot/Demo/Materials/New Material 1.mat
+  artifactKey: Guid(7263b56706f557641b3afdf16ce1064e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OmmyScreenShot/Demo/Materials/New Material 1.mat using Guid(7263b56706f557641b3afdf16ce1064e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd15b255c5c1e6d708b01c03e6b4de6fd') in 2.617395 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000110 seconds.
+  path: Assets/OmmyScreenShot/Demo/UI/pinkRectNormal.png
+  artifactKey: Guid(f7d1ae69dece346e089c3c0f3c27598a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OmmyScreenShot/Demo/UI/pinkRectNormal.png using Guid(f7d1ae69dece346e089c3c0f3c27598a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4300f5f70239ae9a78ef533a0c4dffe1') in 0.041344 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000085 seconds.
+  path: Assets/OmmyScreenShot/Demo/UI/likeBtn.png
+  artifactKey: Guid(7d1941b10578c4199a6f70ad3608f61d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OmmyScreenShot/Demo/UI/likeBtn.png using Guid(7d1941b10578c4199a6f70ad3608f61d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '742e152c709749d63e1a67733c4ff055') in 0.024222 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000092 seconds.
+  path: Assets/OmmyScreenShot/Resources/logo.png
+  artifactKey: Guid(722c6163a29dd411eb5d6b6a4ec6cc24) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OmmyScreenShot/Resources/logo.png using Guid(722c6163a29dd411eb5d6b6a4ec6cc24) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2fc3f504a10071591dbc6ec9424f33ec') in 0.182565 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000066 seconds.
+  path: Assets/OmmyScreenShot/Demo/Scene
+  artifactKey: Guid(7aac58fcd379e094f93c30a56afa30d0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OmmyScreenShot/Demo/Scene using Guid(7aac58fcd379e094f93c30a56afa30d0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '01e696d4cd1ea3906902c1dc4020b5de') in 0.001814 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000066 seconds.
+  path: Assets/OmmyScreenShot/Demo/Materials/New Material.mat
+  artifactKey: Guid(0019468a12820d340a01c3e80f1dfdaa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OmmyScreenShot/Demo/Materials/New Material.mat using Guid(0019468a12820d340a01c3e80f1dfdaa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8bda46a700e3440d23376cb9280cf6bb') in 0.011276 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000068 seconds.
+  path: Assets/OmmyScreenShot/Resources
+  artifactKey: Guid(8d6005dec2830ee4987ccbc4c40e1e77) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OmmyScreenShot/Resources using Guid(8d6005dec2830ee4987ccbc4c40e1e77) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '87f58d999c0b108c51ce241f7efeefdc') in 0.001230 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000058 seconds.
+  path: Assets/OmmyScreenShot/Demo/UI/settingsBtn.png
+  artifactKey: Guid(f76b0b02b3cde4854aa732b8dc902dc6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OmmyScreenShot/Demo/UI/settingsBtn.png using Guid(f76b0b02b3cde4854aa732b8dc902dc6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2a7a9702e4b140d94151e5447fa987a5') in 0.033383 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000086 seconds.
+  path: Assets/OmmyScreenShot/Demo/UI/greenBtnTapped.png
+  artifactKey: Guid(d2020e51a5a574ba788c9f9ece96c793) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OmmyScreenShot/Demo/UI/greenBtnTapped.png using Guid(d2020e51a5a574ba788c9f9ece96c793) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '960a34e6a9094a769e44bdf3d4f52c38') in 0.043548 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000073 seconds.
+  path: Assets/OmmyScreenShot/Demo/UI
+  artifactKey: Guid(1cd36622e55334cf08f6c6834f9f7c65) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OmmyScreenShot/Demo/UI using Guid(1cd36622e55334cf08f6c6834f9f7c65) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9047da024ba0df8013dfba62f7a8f828') in 0.001438 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000091 seconds.
+  path: Assets/OmmyScreenShot/Demo/Materials
+  artifactKey: Guid(b066a528af0ff1543bf0f74f427c992e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OmmyScreenShot/Demo/Materials using Guid(b066a528af0ff1543bf0f74f427c992e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c7d85de2de098ce23e2faf6efc8f716b') in 0.001460 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000080 seconds.
+  path: Assets/OmmyScreenShot/Demo/UI/shareIcon.png
+  artifactKey: Guid(3d49f2064fd72434687a4c628933ee54) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OmmyScreenShot/Demo/UI/shareIcon.png using Guid(3d49f2064fd72434687a4c628933ee54) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7f089f2d5d1f6a05bec29f7769d0b4e5') in 0.017295 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000067 seconds.
+  path: Assets/OmmyScreenShot/Demo/UI/soundOnBtn.png
+  artifactKey: Guid(aeb8b39c641ca40f09f3ec5c647b1a9a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OmmyScreenShot/Demo/UI/soundOnBtn.png using Guid(aeb8b39c641ca40f09f3ec5c647b1a9a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e3762a9bc214a134d13aaeda8c2e7c39') in 0.019509 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000064 seconds.
+  path: Assets/OmmyScreenShot/Demo/Scene/Demo.unity
+  artifactKey: Guid(9fc0d4010bbf28b4594072e72b8655ab) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OmmyScreenShot/Demo/Scene/Demo.unity using Guid(9fc0d4010bbf28b4594072e72b8655ab) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1da15e10b7a1fbc87a2e06112ab0d434') in 0.001391 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000075 seconds.
+  path: Assets/OmmyScreenShot/Demo/UI/starIcon.png
+  artifactKey: Guid(0ddfb172356ab4a9c8e93a55d7338119) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OmmyScreenShot/Demo/UI/starIcon.png using Guid(0ddfb172356ab4a9c8e93a55d7338119) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f40c227d92dff28b84cff20532e9c54e') in 0.036710 seconds 
+Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
+AssetImportWorker is now disconnected from the server
+Process exiting

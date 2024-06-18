@@ -3,25 +3,26 @@ using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace screenshot
+namespace Ommy.Screenshot
 {
     [ExecuteInEditMode]
-    public class Screenshot : EditorWindow
+    public class OmmyScreenshot : EditorWindow
     {
         public Camera myCamera;
         int scale = 1;
         string path = "";
-        bool isTransparent = false;
+        bool aplha = false;
         bool isPortrait = false;
         bool takeHiResShot = false;
         public string lastScreenshot = "";
         Texture2D logo;
         List<Vector2Int> customResolutions = new List<Vector2Int>();
+        public Vector2 scrollPosition = Vector2.zero;
 
-        [MenuItem("Tools/Ommy ScreenShot/Open ScreenShoot Window")]
+        [MenuItem("Ommy/Ommy Screenshot/Open ScreenShoot Window")]
         public static void ShowWindow()
         {
-            EditorWindow editorWindow = GetWindow<Screenshot>();
+            EditorWindow editorWindow = GetWindow<OmmyScreenshot>();
             editorWindow.autoRepaintOnSceneChange = true;
             editorWindow.titleContent = new GUIContent("Screenshot");
             editorWindow.Show();
@@ -40,9 +41,14 @@ namespace screenshot
                 fontStyle = FontStyle.Bold,
                 fontSize = 18,
                 alignment = TextAnchor.MiddleCenter,
-                normal = { textColor = Color.cyan }
+                normal = { textColor = Color.grey }
             };
-
+            GUIStyle logoStyle = new GUIStyle(GUI.skin.label)
+            {
+                fixedHeight = 64,
+                fixedWidth = 64,
+                alignment = TextAnchor.UpperLeft,
+            };
             GUIStyle subHeaderStyle = new GUIStyle(GUI.skin.label)
             {
                 fontStyle = FontStyle.Bold,
@@ -58,7 +64,13 @@ namespace screenshot
                 normal = { textColor = Color.white, background = MakeTex(2, 2, new Color(0.1f, 0.5f, 0.8f, 1.0f)) },
                 fixedHeight = 40
             };
-
+            GUIStyle captureButtonStyle = new GUIStyle(GUI.skin.button)
+            {
+                fontSize = 14,
+                fontStyle = FontStyle.Bold,
+                normal = { textColor = Color.green, background = MakeTex(2, 2, Color.blue) },
+                fixedHeight = 40
+            };
             GUIStyle browseButtonStyle = new GUIStyle(GUI.skin.button)
             {
                 fontSize = 12,
@@ -79,16 +91,30 @@ namespace screenshot
                 alignment = TextAnchor.MiddleCenter,
                 normal = { textColor = Color.white, background = MakeTex(2, 2, new Color(0.2f, 0.2f, 0.2f, 1.0f)) }
             };
-
+            GUIStyle toggleFieldStyle = new GUIStyle(GUI.skin.toggle)
+            {
+                fontStyle = FontStyle.Bold
+            };
             // Main layout
             GUILayout.BeginVertical("box");
             GUILayout.Space(10);
+            // Horizontal layout for header and logo
+            GUILayout.BeginHorizontal();
 
-            GUILayout.Label(logo, GUILayout.Height(64), GUILayout.Width(64));
+            // Display logo
+            //GUILayout.Label(logo, GUILayout.Height(64), GUILayout.Width(64));
+            GUILayout.Label(logo, logoStyle);
 
-            GUILayout.Label("Ommy's Screenshot Plugin", headerStyle);
+            // Header text
+            GUILayout.BeginVertical();
+            GUILayout.Label("Ommy Screenshot Plugin", headerStyle);
             GUILayout.Space(10);
+            GUILayout.EndVertical();
 
+            GUILayout.EndHorizontal(); // End horizontal layout for header and logo
+
+            GUILayout.Space(10);
+            scrollPosition = GUILayout.BeginScrollView(scrollPosition);
             // Custom resolutions section
             GUILayout.Label("Custom Resolutions", subHeaderStyle);
             GUILayout.Space(5);
@@ -113,11 +139,58 @@ namespace screenshot
 
             GUILayout.Space(10);
 
-            scale = EditorGUILayout.IntSlider("Scale", scale, 1, 15);
+            //scale = EditorGUILayout.IntSlider("Scale", scale, 1, 15);
 
-            EditorGUILayout.HelpBox("Choose a proper width and height. The scale factor multiplies the renders without losing quality.", MessageType.Info);
             GUILayout.Space(10);
-
+            GUILayout.Label("Presets", subHeaderStyle);
+            isPortrait = EditorGUILayout.Toggle("Is Portrait", isPortrait);
+            EditorGUILayout.HelpBox("Check portrait if your game in portrait mode.", MessageType.Info);
+            if (GUILayout.Button("Icon Size", buttonStyle))
+            {
+                customResolutions.Clear();
+                customResolutions.Add(new Vector2Int(1024, 1024));
+                customResolutions.Add(new Vector2Int(512, 512));
+                scale = 1;
+            }
+            if (GUILayout.Button("IOS Size", buttonStyle))
+            {
+                customResolutions.Clear();
+                if (isPortrait)
+                {
+                    customResolutions.Add(new Vector2Int(1290, 2796));
+                    customResolutions.Add(new Vector2Int(1284, 2778));
+                    customResolutions.Add(new Vector2Int(1242, 2208));
+                    customResolutions.Add(new Vector2Int(2048, 2732));
+                }
+                else
+                {
+                    customResolutions.Add(new Vector2Int(2796, 1290));
+                    customResolutions.Add(new Vector2Int(2778, 1284));
+                    customResolutions.Add(new Vector2Int(2208, 1242));
+                    customResolutions.Add(new Vector2Int(2732, 2048));
+                }
+                scale = 1;
+            }
+            if (GUILayout.Button("Android Size", buttonStyle))
+            {
+                customResolutions.Clear();
+                if (isPortrait) customResolutions.Add(new Vector2Int(1920, 1080));
+                else customResolutions.Add(new Vector2Int(1080, 1920));
+                scale = 1;
+            }
+            if (GUILayout.Button("Feature Image Size", buttonStyle))
+            {
+                customResolutions.Clear();
+                if (isPortrait) customResolutions.Add(new Vector2Int(1024, 500));
+                else customResolutions.Add(new Vector2Int(1024, 500));
+                scale = 1;
+            }
+            if (GUILayout.Button("Set To Screen Size", buttonStyle))
+            {
+                Vector2 screenSize = Handles.GetMainGameViewSize();
+                customResolutions.Clear();
+                customResolutions.Add(new Vector2Int((int)screenSize.x, (int)screenSize.y));
+            }
             // Save path section
             GUILayout.Label("Save Path", subHeaderStyle);
             GUILayout.Space(5);
@@ -138,8 +211,9 @@ namespace screenshot
             if (myCamera == null)
                 myCamera = Camera.main;
 
-            isTransparent = EditorGUILayout.Toggle("Transparent Background", isTransparent);
-            isPortrait = EditorGUILayout.Toggle("Is Portrait", isPortrait);
+            aplha = EditorGUILayout.Toggle("Use Alpha Color", aplha, toggleFieldStyle);
+            EditorGUILayout.HelpBox("Check Alpha if you want format ARGB32 instead of RGB24.", MessageType.Info);
+
             GUILayout.Space(10);
 
 
@@ -150,50 +224,12 @@ namespace screenshot
             //     customResolutions.Add(new Vector2Int(2560, 1440));
             //     scale = 1;
             // }
-            if (GUILayout.Button("Icon Size", buttonStyle))
-            {
-                customResolutions.Clear();
-                customResolutions.Add(new Vector2Int(1024, 1024));
-                customResolutions.Add(new Vector2Int(512, 512));
-                scale = 1;
-            }
-            if (GUILayout.Button("IOS Size", buttonStyle))
-            {
-                customResolutions.Clear();
-                if(isPortrait)
-                {
-                customResolutions.Add(new Vector2Int(1290, 2796));
-                customResolutions.Add(new Vector2Int(1284, 2778));
-                customResolutions.Add(new Vector2Int(1242, 2208));
-                customResolutions.Add(new Vector2Int(2028, 2732));
-                }
-                else
-                {
-                customResolutions.Add(new Vector2Int(2796, 1290));
-                customResolutions.Add(new Vector2Int(2778, 1284));
-                customResolutions.Add(new Vector2Int(2208, 1242));
-                customResolutions.Add(new Vector2Int(2732, 2028));                  
-                }
-                scale = 1;
-            }
-            if (GUILayout.Button("Android Size", buttonStyle))
-            {
-                customResolutions.Clear();
-                if(isPortrait)customResolutions.Add(new Vector2Int(1920, 1080));
-                else customResolutions.Add(new Vector2Int(1080, 1920));
-                scale = 1;
-            }
-            if (GUILayout.Button("Set To Screen Size", buttonStyle))
-            {
-                Vector2 screenSize = Handles.GetMainGameViewSize();
-                customResolutions.Clear();
-                customResolutions.Add(new Vector2Int((int)screenSize.x, (int)screenSize.y));
-            }
+
             GUILayout.Space(10);
 
             EditorGUILayout.BeginHorizontal();
 
-            if (GUILayout.Button("Take Screenshot", buttonStyle))
+            if (GUILayout.Button("Take Screenshot", captureButtonStyle))
             {
                 if (string.IsNullOrEmpty(path))
                 {
@@ -202,7 +238,7 @@ namespace screenshot
                 }
                 TakeHiResShot();
             }
-
+            EditorGUILayout.EndHorizontal();
             if (GUILayout.Button("Take Screenshot With UI", buttonStyle))
             {
                 if (string.IsNullOrEmpty(path))
@@ -213,7 +249,6 @@ namespace screenshot
                 CaptureScreenshotsWithUI();
             }
 
-            EditorGUILayout.EndHorizontal();
             GUILayout.Space(10);
 
             EditorGUILayout.BeginHorizontal();
@@ -232,10 +267,10 @@ namespace screenshot
                 Application.OpenURL("file://" + path);
             }
 
-            if (GUILayout.Button("More Assets", buttonStyle))
-            {
-                Application.OpenURL("https://assetstore.unity.com/publishers/71963");
-            }
+            // if (GUILayout.Button("More Assets", buttonStyle))
+            // {
+            //     Application.OpenURL("https://assetstore.unity.com/publishers/71963");
+            // }
 
             EditorGUILayout.EndHorizontal();
             GUILayout.EndVertical();
@@ -245,8 +280,7 @@ namespace screenshot
                 CaptureScreenshots();
                 takeHiResShot = false;
             }
-
-            EditorGUILayout.HelpBox("In case of any error, make sure you have Unity Pro as the plugin requires Unity Pro to work.", MessageType.Info);
+            GUILayout.EndScrollView();
         }
         [ExecuteAlways]
         void CaptureScreenshotsWithUI()
@@ -296,7 +330,7 @@ namespace screenshot
                 RenderTexture rt = new RenderTexture(resWidthN, resHeightN, 24);
                 myCamera.targetTexture = rt;
 
-                TextureFormat tFormat = isTransparent ? TextureFormat.ARGB32 : TextureFormat.RGB24;
+                TextureFormat tFormat = aplha ? TextureFormat.ARGB32 : TextureFormat.RGB24;
                 Texture2D screenShot = new Texture2D(resWidthN, resHeightN, tFormat, false);
                 myCamera.Render();
                 RenderTexture.active = rt;
@@ -304,7 +338,7 @@ namespace screenshot
                 myCamera.targetTexture = null;
                 RenderTexture.active = null; // added line to fix an issue with RenderTexture
                 DestroyImmediate(rt); // added line to avoid memory leaks
-                
+
                 // Save the screenshot as a PNG file
                 byte[] bytes = screenShot.EncodeToPNG();
                 File.WriteAllBytes(filename, bytes);
